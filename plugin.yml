@@ -1,0 +1,19 @@
+name: InteriorKits
+main: com.boveybrawlers.InteriorKits.InteriorKits
+version: 0.5
+commands:
+    head:
+        description: Gives a player a player-owned skull and records this for the top kit
+        usage: /head
+    skull:
+        description: An alias for /head
+        usage: /skull
+    ikit:
+        description: Gives a player the 9 top player-owner skulls for interior decoration
+        usage: /ikit
+    interior:
+        description: An alias for /ikit
+        usage: /interior
+    int:
+        description: An alias for /ikit
+        usage: /int
