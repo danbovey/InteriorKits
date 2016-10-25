@@ -30,26 +30,27 @@ public class HeadCommands implements CommandExecutor {
 				if(args.length == 1) {
 					// Replace the item in player's hand with the player head
 					final String owner = args[0];
-					ItemStack skull = Head.get(owner);
+					ItemStack skull = Skull.makePlayer(owner);
 					player.getInventory().setItemInHand(skull);
 					
 					if(!player.hasMetadata("interiorkits-" + owner) && !player.hasMetadata("interiorkits-cooldown")) {
 						// Add 1 to the player head in the config
 						heads = plugin.heads.get();
 						
-						int amount = 1;
+						int amount = 0;
 						if(heads.contains(owner)) {
 							amount = heads.getInt(args[0]);
 						}
+						amount += 1;
 						
 						heads.set(owner, amount);
 					}
 					
 					// Stop this player adding this to the config for a time
-					player.setMetadata("interiorkits-cooldown", new FixedMetadataValue(plugin, true));
-					player.setMetadata("interiorkits-" + owner, new FixedMetadataValue(plugin, true));
+					player.setMetadata("interiorkits-cooldown", new FixedMetadataValue(this.plugin, true));
+					player.setMetadata("interiorkits-" + owner, new FixedMetadataValue(this.plugin, true));
 					
-					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					Bukkit.getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable() {
 						public void run() {
 							player.removeMetadata("interiorkits-cooldown", plugin);
 						}
@@ -62,13 +63,13 @@ public class HeadCommands implements CommandExecutor {
 					}, 2400);
 					
 				} else {
-					player.sendMessage(plugin.prefix + ChatColor.DARK_AQUA + "Usage: /" + command + " <player>");
+					player.sendMessage(this.plugin.prefix + ChatColor.DARK_AQUA + "Usage: /" + command.getName() + " <player>");
 				}
 			} else {
-				player.sendMessage(plugin.prefix + ChatColor.RED + "You must be in creative mode to use InteriorKits");
+				player.sendMessage(this.plugin.prefix + ChatColor.RED + "You must be in creative mode to use InteriorKits");
 			}
 		} else {
-			sender.sendMessage(plugin.prefix + ChatColor.RED + "You must be a player to use InteriorKits");
+			sender.sendMessage(this.plugin.prefix + ChatColor.RED + "You must be a player to use InteriorKits");
 		}
 		
 		return true;

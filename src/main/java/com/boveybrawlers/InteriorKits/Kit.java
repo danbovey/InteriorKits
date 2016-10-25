@@ -52,7 +52,7 @@ public class Kit {
 			for(Map.Entry<String, Integer> entry : sortedPlayerHeads.entrySet()) {
 				if(i < 9) {
 					String owner = entry.getKey();
-					ItemStack skull = Head.get(owner);
+					ItemStack skull = Skull.makePlayer(owner);
 					skulls.add(skull);
 					
 					i++;

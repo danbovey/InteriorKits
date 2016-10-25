@@ -1,4 +1,4 @@
-package com.boveybrawlers.InteriorKits;
+package com.boveybrawlers.InteriorKits.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,51 +10,55 @@ import java.util.logging.Level;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class HeadConfig {
+import com.boveybrawlers.InteriorKits.InteriorKits;
+
+public class ConfigLoader {
 	
 	private InteriorKits plugin;
+	private String file;
 	
-	public FileConfiguration headsConfig = null;
-	private File headsConfigFile = null;
+	public FileConfiguration config = null;
+	private File configFile = null;
 	
-	public HeadConfig(InteriorKits plugin) {
+	public ConfigLoader(InteriorKits plugin, String file) {
 		this.plugin = plugin;
+		this.file = file;
 	}
 
 	public void reload() {
-		if(headsConfigFile == null) {
-			headsConfigFile = new File(plugin.getDataFolder(), "heads.yml");
+		if(configFile == null) {
+			configFile = new File(plugin.getDataFolder(), this.file);
 		}
 		
-		headsConfig = YamlConfiguration.loadConfiguration(headsConfigFile);
+		config = YamlConfiguration.loadConfiguration(configFile);
 		
 	    Reader defConfigStream = null;
 		try {
-			defConfigStream = new InputStreamReader(plugin.getResource("heads.yml"), "UTF8");
+			defConfigStream = new InputStreamReader(plugin.getResource(this.file), "UTF8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	    if (defConfigStream != null) {
 	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	        headsConfig.setDefaults(defConfig);
+	        config.setDefaults(defConfig);
 	    }
 	}
 	
 	public FileConfiguration get() {
-	    if (headsConfig == null) {
+	    if (config == null) {
 	        reload();
 	    }
-	    return headsConfig;
+	    return config;
 	}
 	
 	public void save() {
-	    if (headsConfig == null || headsConfigFile == null) {
+	    if (config == null || configFile == null) {
 	        return;
 	    }
 	    try {
-	        get().save(headsConfigFile);
+	        get().save(configFile);
 	    } catch (IOException ex) {
-	        plugin.getLogger().log(Level.SEVERE, "Could not save config to " + headsConfigFile, ex);
+	        plugin.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
 	    }
 	}
 	
